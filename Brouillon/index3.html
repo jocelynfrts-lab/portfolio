@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Portfolio Futuriste – Jocelyn Fortes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+/* =========================================================
+   RESET + VARIABLES
+========================================================= */
+*{margin:0;padding:0;box-sizing:border-box;font-family:"Inter",sans-serif;}
+:root{
+  --bg:#f2f4f8;
+  --primary:#00f6ff;
+  --accent:#9b5cff;
+  --text:#1a1d27;
+  --muted:#6b7280;
+  --radius:14px;
+  --transition:0.35s ease;
+}
+
+/* =========================================================
+   BACKGROUND FUTURISTE CLAIR (global)
+========================================================= */
+body{
+  background:var(--bg);
+  color:var(--text);
+  overflow-x:hidden;
+}
+
+/* Grille animée */
+.grid-bg{
+  position:fixed;
+  inset:0;
+  background:
+    linear-gradient(90deg, rgba(0,0,0,0.06) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(0,0,0,0.06) 1px, transparent 1px);
+  background-size:42px 42px;
+  animation:gridMove 22s linear infinite;
+  z-index:-3;
+  opacity:0.25;
+}
+@keyframes gridMove{
+  from{background-position:0 0;}
+  to{background-position:0 260px;}
+}
+
+/* Halo néon */
+.halo{
+  position:fixed;
+  inset:-40%;
+  background:
+    radial-gradient(circle at 30% 20%, rgba(0,246,255,0.25), transparent 60%),
+    radial-gradient(circle at 70% 80%, rgba(155,92,255,0.25), transparent 60%);
+  filter:blur(80px);
+  opacity:0.55;
+  animation:haloPulse 12s ease-in-out infinite;
+  z-index:-4;
+}
+@keyframes haloPulse{
+  0%,100%{opacity:0.45;transform:scale(1);}
+  50%{opacity:0.75;transform:scale(1.1);}
+}
+
+/* Particules bleues (global) */
+.particles{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:-2;
+}
+.particles span{
+  position:absolute;
+  width:5px;height:5px;
+  background:var(--primary);
+  border-radius:50%;
+  opacity:0.8;
+  animation:float 6s infinite ease-in-out;
+  box-shadow:0 0 12px var(--primary);
+}
+@keyframes float{
+  0%{transform:translateY(0) scale(1);}
+  50%{transform:translateY(-50px) scale(1.5);}
+  100%{transform:translateY(0) scale(1);}
+}
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+nav{
+  position:fixed;
+  top:0;left:0;right:0;
+  height:60px;
+  backdrop-filter:blur(14px);
+  background:rgba(255,255,255,0.7);
+  border-bottom:1px solid rgba(0,0,0,0.08);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 20px;
+  z-index:10;
+}
+nav .logo{
+  font-size:18px;
+  font-weight:700;
+  letter-spacing:0.1em;
+  color:var(--primary);
+  text-shadow:0 0 12px var(--primary);
+}
+nav .links{
+  display:flex;
+  gap:20px;
+}
+nav .links a{
+  color:var(--muted);
+  text-decoration:none;
+  font-size:14px;
+  text-transform:uppercase;
+  letter-spacing:0.1em;
+  transition:var(--transition);
+}
+nav .links a:hover{
+  color:var(--primary);
+  text-shadow:0 0 8px var(--primary);
+}
+
+/* =========================================================
+   PAGES (SPA)
+========================================================= */
+.page{
+  display:none;
+  padding:120px 20px 60px;
+  max-width:900px;
+  margin:auto;
+  animation:fadeIn 0.6s ease;
+}
+.page.active{
+  display:block;
+}
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(20px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+/* =========================================================
+   TITRES
+========================================================= */
+h1{
+  font-size:36px;
+  margin-bottom:20px;
+  background:linear-gradient(120deg,var(--primary),var(--accent));
+  -webkit-background-clip:text;
+  color:transparent;
+  text-shadow:0 0 20px rgba(0,246,255,0.4);
+}
+h2{
+  font-size:22px;
+  margin-bottom:10px;
+  color:var(--text);
+}
+
+/* =========================================================
+   CARDS
+========================================================= */
+.card{
+  padding:20px;
+  border-radius:var(--radius);
+  background:white;
+  border:1px solid rgba(0,0,0,0.08);
+  margin-bottom:20px;
+  transition:var(--transition);
+  box-shadow:0 10px 30px rgba(0,0,0,0.06);
+}
+.card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 0 20px rgba(0,246,255,0.2);
+}
+
+/* =========================================================
+   SECTION PROJETS (fond gris + particules orange)
+========================================================= */
+#projects{
+  background:#e5e5e5;
+  border-radius:20px;
+  padding:40px 20px;
+  margin-top:40px;
+  position:relative;
+  overflow:hidden;
+}
+
+/* Particules orange */
+.projects-particles span{
+  position:absolute;
+  width:7px;height:7px;
+  background:#ffb300;
+  border-radius:50%;
+  opacity:0.9;
+  animation:float2 7s infinite ease-in-out;
+  box-shadow:0 0 14px #ff9800;
+}
+@keyframes float2{
+  0%{transform:translateY(0) scale(1);}
+  50%{transform:translateY(-40px) scale(1.4);}
+  100%{transform:translateY(0) scale(1);}
+}
+
+/* =========================================================
+   FORMULAIRE
+========================================================= */
+form{
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+  margin-top:20px;
+}
+input,textarea{
+  width:100%;
+  padding:12px;
+  border-radius:var(--radius);
+  border:1px solid rgba(0,0,0,0.1);
+  background:white;
+  color:var(--text);
+  font-size:15px;
+}
+input:focus,textarea:focus{
+  border-color:var(--primary);
+  box-shadow:0 0 12px rgba(0,246,255,0.4);
+  outline:none;
+}
+.success{
+  margin-top:10px;
+  color:var(--primary);
+  font-weight:600;
+  opacity:0;
+  animation:fadeIn 0.6s forwards;
+}
+</style>
+</head>
+
+<body>
+
+<div class="halo"></div>
+<div class="grid-bg"></div>
+<div class="particles"></div>
+
+<nav>
+  <div class="logo">JOCELYN FORTES</div>
+  <div class="links">
+    <a href="#" onclick="showPage('home')">Accueil</a>
+    <a href="#" onclick="showPage('skills')">Compétences</a>
+    <a href="#" onclick="showPage('experience')">Expériences</a>
+    <a href="#" onclick="showPage('projects')">Projets</a>
+    <a href="#" onclick="showPage('education')">Formations</a>
+    <a href="#" onclick="showPage('contact')">Contact</a>
+  </div>
+</nav>
+
+<!-- ACCUEIL -->
+<div id="home" class="page active">
+  <h1>Bienvenue, je suis Jocelyn Fortes</h1>
+  <p>Administrateur systèmes & développeur web, spécialisé en environnements Linux, virtualisation, conception web et interfaces modernes.</p>
+  <button class="btn" onclick="showPage('skills')">Voir mes compétences</button>
+</div>
+
+<!-- COMPÉTENCES -->
+<div id="skills" class="page">
+  <h1>Compétences</h1>
+
+  <div class="card">
+    <h2>Administration systèmes</h2>
+    <p>Linux, SQL, GLPI, gestion des accès, maintenance, supervision.</p>
+    <p>Hyperviseurs : VMware, Hyper‑V, VirtualBox, Proxmox.</p>
+    <p>Scripts : Python, XML.</p>
+  </div>
+
+  <div class="card">
+    <h2>Développement web & graphique</h2>
+    <p>HTML, CSS, PHP, Java, Laravel.</p>
+    <p>WordPress, Android.</p>
+    <p>Outils graphiques : Canva.</p>
+  </div>
+</div>
+
+<!-- EXPÉRIENCES -->
+<div id="experience" class="page">
+  <h1>Expériences professionnelles</h1>
+
+  <div class="card">
+    <h2>Administrateur système – Dawan (2024–2025)</h2>
+    <p>Supervision et maintenance des équipements.</p>
+    <p>Gestion des réseaux et des accès utilisateurs.</p>
+  </div>
+
+  <div class="card">
+    <h2>Manager de communauté – Citroën (2022–2023)</h2>
+    <p>Développement d’une application web.</p>
+    <p>Gestion et suivi des réseaux sociaux.</p>
+  </div>
+
+  <div class="card">
+    <h2>Caissier – Aldi (2021)</h2>
+    <p>Vente en rayon, accueil et encaissement.</p>
+  </div>
+</div>
+
+<!-- PROJETS (fond gris + particules orange) -->
+<div id="projects" class="page">
+  <h1>Projets</h1>
+
+  <div class="projects-particles"></div>
+
+  <div class="card">
+    <h2>Nebula Dashboard</h2>
+    <p>Interface temps réel avec animations holographiques.</p>
+  </div>
+
+  <div class="card">
+    <h2>City Explorer</h2>
+    <p>Application SPA avec transitions fluides et API.</p>
+  </div>
+
+  <div class="card">
+    <h2>Portfolio 3D Lite</h2>
+    <p>Expérience immersive inspirée des interfaces sci‑fi.</p>
+  </div>
+</div>
+
+<!-- FORMATIONS -->
+<div id="education" class="page">
+  <h1>Formations</h1>
+
+  <div class="card">
+    <h2>Licence Administration des systèmes</h2>
+    <p>Dawan – Montpellier (2024–2025)</p>
+  </div>
+
+  <div class="card">
+    <h2>Licence Chef de projet web e‑business</h2>
+    <p>DBS School – Nîmes (2022–2023)</p>
+  </div>
+
+  <div class="card">
+    <h2>BTS SIO</h2>
+    <p>CCI Gard – Nîmes (2020–2022)</p>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<div id="contact" class="page">
+  <h1>Contact</h1>
+  <p>Une mission, une alternance, un projet ? Écris‑moi.</p>
+
+  <form onsubmit="sendMessage(event)">
+    <input type="text" id="name" placeholder="Votre nom" required>
+    <input type="email" id="email" placeholder="Votre email" required>
+    <textarea id="message" rows="5" placeholder="Votre message..." required></textarea>
+    <button class="btn" type="submit">Envoyer</button>
+  </form>
+
+  <div id="success" class="success"></div>
+</div>
+
+<script>
+/* SPA */
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+/* Particules bleues globales */
+const container=document.querySelector('.particles');
+for(let i=0;i<50;i++){
+  const s=document.createElement('span');
+  s.style.left=Math.random()*100+"%";
+  s.style.top=Math.random()*100+"%";
+  s.style.animationDelay=(Math.random()*6)+"s";
+  container.appendChild(s);
+}
+
+/* Particules orange dans PROJETS */
+const proj=document.querySelector('.projects-particles');
+for(let i=0;i<40;i++){
+  const p=document.createElement('span');
+  p.style.left=Math.random()*100+"%";
+  p.style.top=Math.random()*100+"%";
+  p.style.animationDelay=(Math.random()*7)+"s";
+  proj.appendChild(p);
+}
+
+/* Formulaire */
+function sendMessage(e){
+  e.preventDefault();
+  const name=document.getElementById("name").value;
+  document.getElementById("success").textContent=
+    "Merci "+name+" — votre message a bien été envoyé (simulation).";
+}
+</script>
+
+</body>
+</html>

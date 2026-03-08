@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Portfolio Futuriste – Jocelyn Fortes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+/* =========================================================
+   RESET + VARIABLES
+========================================================= */
+*{margin:0;padding:0;box-sizing:border-box;font-family:"Inter",sans-serif;}
+:root{
+  --bg:#f2f4f8;
+  --primary:#ffc800;
+  --accent:#ffc800;
+  --text:#1a1d27;
+  --muted:#6b7280;
+  --radius:14px;
+  --transition:0.35s ease;
+}
+
+/* =========================================================
+   BACKGROUND FUTURISTE
+========================================================= */
+body{ background:var(--bg); color:var(--text); overflow-x:hidden; }
+
+.grid-bg{
+  position:fixed; inset:0;
+  background:
+    linear-gradient(90deg, rgba(0,0,0,0.06) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(0,0,0,0.06) 1px, transparent 1px);
+  background-size:42px 42px;
+  animation:gridMove 22s linear infinite;
+  z-index:-3; opacity:0.25;
+}
+@keyframes gridMove{ from{background-position:0 0;} to{background-position:0 260px;} }
+
+.halo{
+  position:fixed; inset:-40%;
+  background:
+    radial-gradient(circle at 30% 20%, rgba(0,246,255,0.25), transparent 60%),
+    radial-gradient(circle at 70% 80%, rgba(155,92,255,0.25), transparent 60%);
+  filter:blur(80px); opacity:0.55; z-index:-4;
+}
+
+/* =========================================================
+   NAVIGATION (CORRIGÉE)
+========================================================= */
+nav{
+  position:fixed; top:0; left:0; right:0; height:60px;
+  backdrop-filter:blur(14px); background:rgba(255, 255, 255, 0.5);
+  border-bottom:1px solid rgba(0,0,0,0.08);
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 20px; z-index:100;
+}
+nav .logo{ font-size:18px; font-weight:700; color:var(--primary); text-shadow:0 0 12px var(--primary); }
+nav .links{ display:flex; gap:20px; }
+nav .links a{
+  color:var(--muted); text-decoration:none; font-size:13px; cursor:pointer;
+  text-transform:uppercase; font-weight:600; transition:var(--transition);
+}
+nav .links a:hover, nav .links a.active{ color:var(--text); border-bottom:2px solid var(--primary); }
+
+/* =========================================================
+   PAGES (SPA)
+========================================================= */
+.page{ display:none; padding:120px 20px 60px; max-width:900px; margin:auto; animation:fadeIn 0.6s ease; }
+.page.active{ display:block; }
+@keyframes fadeIn{ from{opacity:0; transform:translateY(20px);} to{opacity:1; transform:translateY(0);} }
+
+h1{ font-size:36px; margin-bottom:20px; background:linear-gradient(120deg,var(--primary),var(--accent)); -webkit-background-clip:text; color:transparent; }
+h2{ font-size:22px; margin-bottom:10px; color:var(--text); }
+
+.card{
+  padding:20px; border-radius:var(--radius); background:white;
+  border:1px solid rgba(0,0,0,0.08); margin-bottom:20px;
+  transition:var(--transition); box-shadow:0 10px 30px rgba(0,0,0,0.06);
+}
+.card:hover{ transform:translateY(-4px); box-shadow:0 0 20px rgba(255,200,0,0.2); }
+
+/* =========================================================
+   SECTION FREELANCE (ACCUEIL)
+========================================================= */
+.freelance-title { margin-top: 40px; margin-bottom: 20px; font-size: 1.2rem; font-weight: 700; color: var(--muted); text-transform: uppercase; }
+.freelance-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; }
+.client-logo {
+  background: white; height: 80px; display: flex; align-items: center; justify-content: center;
+  border-radius: var(--radius); border: 1px solid rgba(0,0,0,0.05); transition: 0.3s; padding: 10px;
+}
+.client-logo img { max-width: 100%; max-height: 100%; filter: grayscale(100%); transition: 0.3s; }
+.client-logo:hover img { filter: grayscale(0%); transform: scale(1.1); }
+
+/* =========================================================
+   BOUTONS & FORMULAIRE
+========================================================= */
+.btn{
+  display:inline-block; padding:12px 20px; border-radius:var(--radius);
+  background:linear-gradient(120deg,var(--primary),var(--accent));
+  color:white; font-weight:600; text-transform:uppercase; cursor:pointer; border:none;
+}
+form{ display:flex; flex-direction:column; gap:16px; margin-top:20px; }
+input, textarea{ width:100%; padding:12px; border-radius:var(--radius); border:1px solid rgba(0,0,0,0.1); }
+.success{ margin-top:10px; color:var(--primary); font-weight:600; display:none; }
+</style>
+</head>
+
+<body>
+
+<div class="halo"></div>
+<div class="grid-bg"></div>
+
+<nav>
+  <div class="logo">JOCELYN FORTES</div>
+  <div class="links">
+    <a onclick="showPage('home')" class="nav-item active">Accueil</a>
+    <a onclick="showPage('skills')" class="nav-item">Compétences</a>
+    <a onclick="showPage('experience')" class="nav-item">Expériences</a>
+    <a onclick="showPage('education')" class="nav-item">Formations</a>
+    <a onclick="showPage('contact')" class="nav-item">Contact</a>
+  </div>
+</nav>
+
+<div id="home" class="page active">
+  <h1>Bienvenue, je suis Jocelyn Fortes</h1>
+  <p>Administrateur systèmes & développeur web, spécialisé en environnements Linux, virtualisation et interfaces modernes.</p>
+  <button class="btn" onclick="showPage('skills')">Voir mes compétences</button>
+
+  <div class="freelance-title">Expertises Freelance & Clients</div>
+  <div class="freelance-grid">
+    <div class="client-logo"><img src="C:\Users\joss_\Documents\Clients\GG Services" alt=""></div>
+    <div class="client-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/e/e0/Logo_ALDI_Sud.svg" alt="Aldi"></div>
+    <div class="client-logo"><img src="https://via.placeholder.com/150x80?text=VOTRE+CLIENT" alt="Client Freelance"></div>
+  </div>
+</div>
+
+<div id="skills" class="page">
+  <h1>Compétences</h1>
+  <div class="card">
+    <h2>Administration systèmes</h2>
+    <p>Linux, SQL, GLPI, gestion des accès, maintenance, supervision.</p>
+    <p>Hyperviseurs : VMware, Hyper‑V, VirtualBox, Proxmox.</p>
+    <p>Scripts : Python, XML.</p>
+  </div>
+  <div class="card">
+    <h2>Développement web & graphique</h2>
+    <p>HTML, CSS, PHP, Java, Laravel, WordPress, Android.</p>
+    <p>Outils graphiques : Canva.</p>
+  </div>
+</div>
+
+<div id="experience" class="page">
+  <h1>Expériences professionnelles</h1>
+  <div class="card">
+    <h2>Administrateur système – Dawan (2024–2025)</h2>
+    <p>Supervision et maintenance des équipements. Gestion des réseaux et des accès utilisateurs.</p>
+  </div>
+  <div class="card">
+    <h2>Manager de communauté – Citroën (2022–2023)</h2>
+    <p>Développement d’une application web. Gestion et suivi des réseaux sociaux.</p>
+  </div>
+  <div class="card">
+    <h2>Caissier – Aldi (2021)</h2>
+    <p>Vente en rayon, accueil et encaissement.</p>
+  </div>
+</div>
+
+<div id="education" class="page">
+  <h1>Formations</h1>
+  <div class="card">
+    <h2>Licence Administration des systèmes</h2>
+    <p>Dawan – Montpellier (2024–2025)</p>
+  </div>
+  <div class="card">
+    <h2>Licence Chef de projet web e‑business</h2>
+    <p>DBS School – Nîmes (2022–2023)</p>
+  </div>
+  <div class="card">
+    <h2>BTS SIO</h2>
+    <p>CCI Gard – Nîmes (2020–2022)</p>
+  </div>
+</div>
+
+<div id="contact" class="page">
+  <h1>Contact</h1>
+  <p>Une mission, une alternance, un projet ? Écris‑moi.</p>
+  <form onsubmit="sendMessage(event)">
+    <input type="text" id="name" placeholder="Votre nom" required>
+    <input type="email" id="email" placeholder="Votre email" required>
+    <textarea id="message" rows="5" placeholder="Votre message..." required></textarea>
+    <button class="btn" type="submit">Envoyer</button>
+  </form>
+  <div id="success" class="success">Merci ! Message bien reçu.</div>
+</div>
+
+<script>
+function showPage(id){
+  // Gestion des pages
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  
+  // Gestion du menu actif
+  document.querySelectorAll('.nav-item').forEach(link => {
+    link.classList.remove('active');
+    if(link.getAttribute('onclick').includes(id)) link.classList.add('active');
+  });
+
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function sendMessage(e){
+  e.preventDefault();
+  document.getElementById("success").style.display = "block";
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Portfolio Futuriste – Neon Grid SPA</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+/* =========================================================
+   RESET + VARIABLES
+========================================================= */
+*{margin:0;padding:0;box-sizing:border-box;font-family:"Inter",sans-serif;}
+:root{
+  --bg:#05060a;
+  --bg2:#0a0c14;
+  --primary:#00f6ff;
+  --accent:#9b5cff;
+  --text:#e8ecff;
+  --muted:#8a8fa6;
+  --radius:14px;
+  --transition:0.35s ease;
+}
+
+/* =========================================================
+   BACKGROUND ANIMÉ (grille + particules)
+========================================================= */
+body{
+  background:var(--bg);
+  color:var(--text);
+  overflow-x:hidden;
+}
+
+.grid-bg{
+  position:fixed;
+  inset:0;
+  background:
+    linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+  background-size:40px 40px;
+  animation:gridMove 18s linear infinite;
+  z-index:-2;
+}
+
+@keyframes gridMove{
+  from{background-position:0 0;}
+  to{background-position:0 200px;}
+}
+
+.particles{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:-1;
+}
+
+.particles span{
+  position:absolute;
+  width:4px;height:4px;
+  background:var(--primary);
+  border-radius:50%;
+  opacity:0.6;
+  animation:float 6s infinite ease-in-out;
+}
+
+@keyframes float{
+  0%{transform:translateY(0) scale(1);}
+  50%{transform:translateY(-40px) scale(1.4);}
+  100%{transform:translateY(0) scale(1);}
+}
+
+/* =========================================================
+   NAVIGATION FUTURISTE
+========================================================= */
+nav{
+  position:fixed;
+  top:0;left:0;right:0;
+  height:60px;
+  backdrop-filter:blur(14px);
+  background:rgba(10,12,20,0.6);
+  border-bottom:1px solid rgba(255,255,255,0.08);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 20px;
+  z-index:10;
+}
+
+nav .logo{
+  font-size:18px;
+  font-weight:700;
+  letter-spacing:0.1em;
+  color:var(--primary);
+  text-shadow:0 0 12px var(--primary);
+}
+
+nav .links{
+  display:flex;
+  gap:20px;
+}
+
+nav .links a{
+  color:var(--muted);
+  text-decoration:none;
+  font-size:14px;
+  text-transform:uppercase;
+  letter-spacing:0.1em;
+  transition:var(--transition);
+}
+
+nav .links a:hover{
+  color:var(--primary);
+  text-shadow:0 0 8px var(--primary);
+}
+
+/* =========================================================
+   PAGES (SPA)
+========================================================= */
+.page{
+  display:none;
+  padding:120px 20px 60px;
+  max-width:900px;
+  margin:auto;
+  animation:fadeIn 0.6s ease;
+}
+
+.page.active{
+  display:block;
+}
+
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(20px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+/* =========================================================
+   TITRES
+========================================================= */
+h1{
+  font-size:36px;
+  margin-bottom:20px;
+  background:linear-gradient(120deg,var(--primary),var(--accent));
+  -webkit-background-clip:text;
+  color:transparent;
+  text-shadow:0 0 20px rgba(0,246,255,0.4);
+}
+
+p{
+  color:var(--muted);
+  line-height:1.6;
+  margin-bottom:20px;
+}
+
+/* =========================================================
+   BOUTONS
+========================================================= */
+.btn{
+  display:inline-block;
+  padding:12px 20px;
+  border-radius:var(--radius);
+  background:linear-gradient(120deg,var(--primary),var(--accent));
+  color:#05060a;
+  font-weight:600;
+  text-transform:uppercase;
+  letter-spacing:0.1em;
+  cursor:pointer;
+  transition:var(--transition);
+  border:none;
+}
+
+.btn:hover{
+  transform:translateY(-2px) scale(1.03);
+  box-shadow:0 0 20px var(--primary);
+}
+
+/* =========================================================
+   FORMULAIRE DE CONTACT (style Squarespace/Divi)
+========================================================= */
+form{
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+  margin-top:20px;
+}
+
+input,textarea{
+  width:100%;
+  padding:12px;
+  border-radius:var(--radius);
+  border:1px solid rgba(255,255,255,0.1);
+  background:rgba(255,255,255,0.05);
+  color:var(--text);
+  font-size:15px;
+  transition:var(--transition);
+}
+
+input:focus,textarea:focus{
+  border-color:var(--primary);
+  box-shadow:0 0 12px rgba(0,246,255,0.4);
+  outline:none;
+}
+
+.success{
+  margin-top:10px;
+  color:var(--primary);
+  font-weight:600;
+  opacity:0;
+  animation:fadeIn 0.6s forwards;
+}
+
+/* =========================================================
+   CARDS PROJETS
+========================================================= */
+.card{
+  padding:20px;
+  border-radius:var(--radius);
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+  margin-bottom:20px;
+  transition:var(--transition);
+}
+
+.card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 0 20px rgba(0,246,255,0.2);
+}
+</style>
+</head>
+
+<body>
+
+<div class="grid-bg"></div>
+<div class="particles"></div>
+
+<nav>
+  <div class="logo">NEON PORTFOLIO</div>
+  <div class="links">
+    <a href="#" onclick="showPage('home')">Accueil</a>
+    <a href="#" onclick="showPage('projects')">Projets</a>
+    <a href="#" onclick="showPage('about')">À propos</a>
+    <a href="#" onclick="showPage('contact')">Contact</a>
+  </div>
+</nav>
+
+<!-- =========================================================
+     PAGE ACCUEIL
+========================================================= -->
+<div id="home" class="page active">
+  <h1>Bienvenue dans mon univers futuriste</h1>
+  <p>Développeur web spécialisé en interfaces modernes, animations avancées et expériences immersives.</p>
+  <button class="btn" onclick="showPage('projects')">Voir mes projets</button>
+</div>
+
+<!-- =========================================================
+     PAGE PROJETS
+========================================================= -->
+<div id="projects" class="page">
+  <h1>Projets</h1>
+
+  <div class="card">
+    <h2>Nebula Dashboard</h2>
+    <p>Interface temps réel avec animations holographiques.</p>
+  </div>
+
+  <div class="card">
+    <h2>City Explorer</h2>
+    <p>Application SPA avec transitions fluides et API.</p>
+  </div>
+
+  <div class="card">
+    <h2>Portfolio 3D Lite</h2>
+    <p>Expérience immersive inspirée des interfaces sci‑fi.</p>
+  </div>
+</div>
+
+<!-- =========================================================
+     PAGE À PROPOS
+========================================================= -->
+<div id="about" class="page">
+  <h1>À propos</h1>
+  <p>Je crée des expériences web futuristes, élégantes et performantes. Passionné par l’UI/UX, les micro‑interactions et les interfaces inspirées de la science‑fiction.</p>
+</div>
+
+<!-- =========================================================
+     PAGE CONTACT
+========================================================= -->
+<div id="contact" class="page">
+  <h1>Contact</h1>
+  <p>Une idée, un projet, une mission ? Écris‑moi.</p>
+
+  <form onsubmit="sendMessage(event)">
+    <input type="text" id="name" placeholder="Votre nom" required>
+    <input type="email" id="email" placeholder="Votre email" required>
+    <textarea id="message" rows="5" placeholder="Votre message..." required></textarea>
+    <button class="btn" type="submit">Envoyer</button>
+  </form>
+
+  <div id="success" class="success"></div>
+</div>
+
+<script>
+/* =========================================================
+   SPA – Navigation entre pages
+========================================================= */
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+/* =========================================================
+   Particules dynamiques
+========================================================= */
+const container=document.querySelector('.particles');
+for(let i=0;i<40;i++){
+  const s=document.createElement('span');
+  s.style.left=Math.random()*100+"%";
+  s.style.top=Math.random()*100+"%";
+  s.style.animationDelay=(Math.random()*6)+"s";
+  container.appendChild(s);
+}
+
+/* =========================================================
+   Formulaire – Simulation d’envoi
+========================================================= */
+function sendMessage(e){
+  e.preventDefault();
+  const name=document.getElementById("name").value;
+  document.getElementById("success").textContent=
+    "Merci "+name+" — votre message a bien été envoyé (simulation).";
+}
+</script>
+
+</body>
+</html>

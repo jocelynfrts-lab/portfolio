@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Portfolio Galactique – Jocelyn Fortes</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* =========================================================
+           VARIABLES "DEEP SPACE"
+        ========================================================= */
+        :root {
+            --bg-deep: #05070a; 
+            --accent-cyan: #00f2ff;
+            --accent-purple: #7000ff;
+            --text-bright: #ffffff;
+            --text-muted: #a0a0a0;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { 
+            background: var(--bg-deep); 
+            color: var(--text-bright); 
+            font-family: "Inter", sans-serif;
+            overflow-x: hidden;
+        }
+
+        h1, h2, .logo { font-family: "Orbitron", sans-serif; text-transform: uppercase; }
+
+        #particle-canvas {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; background: radial-gradient(circle at center, #0a0f1a 0%, #05070a 100%);
+        }
+
+        /* =========================================================
+           NAVIGATION COMPACTE
+        ========================================================= */
+        nav {
+            position: fixed; top: 0; width: 100%; height: 60px;
+            backdrop-filter: blur(20px); background: rgba(5, 7, 10, 0.7);
+            border-bottom: 1px solid var(--glass-border);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 5%; z-index: 1000;
+        }
+        .logo { font-weight: 700; color: var(--accent-cyan); font-size: 1.2rem; letter-spacing: 2px; }
+        .links a {
+            color: var(--text-muted); text-decoration: none; font-size: 0.75rem;
+            margin-left: 20px; font-weight: 600; letter-spacing: 1px; transition: var(--transition);
+        }
+        .links a:hover { color: var(--accent-cyan); text-shadow: 0 0 10px var(--accent-cyan); }
+
+        /* =========================================================
+           SECTIONS (MOINS D'ESPACE)
+        ========================================================= */
+        section { 
+            padding: 60px 10% 30px; /* Réduction drastique des espaces */
+            display: flex; flex-direction: column; justify-content: center;
+            min-height: 80vh; 
+        }
+        
+        h1 { font-size: clamp(1.8rem, 5vw, 3rem); margin-bottom: 10px; color: #fff; }
+        h1 span { color: var(--accent-cyan); }
+
+        h2 { 
+            font-size: 0.9rem; letter-spacing: 4px; color: var(--accent-purple); 
+            margin-bottom: 20px; border-left: 3px solid var(--accent-purple); padding-left: 15px;
+        }
+
+        /* =========================================================
+           CARDS "VAISSEAU / HUD"
+        ========================================================= */
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; }
+        
+        .card {
+            background: var(--glass);
+            padding: 20px; border-radius: 4px;
+            border: 1px solid var(--glass-border);
+            position: relative; overflow: hidden;
+            transition: var(--transition);
+        }
+        /* Petit effet cockpit au hover */
+        .card:hover { 
+            background: rgba(255, 255, 255, 0.07);
+            border-color: var(--accent-cyan);
+            transform: scale(1.02);
+        }
+        .card::before {
+            content: "▲"; position: absolute; top: 5px; right: 10px; 
+            font-size: 10px; color: var(--accent-cyan); opacity: 0.3;
+        }
+
+        .card h3 { color: var(--accent-cyan); margin-bottom: 8px; font-size: 1.1rem; }
+        .card p, .card li { color: var(--text-muted); font-size: 0.85rem; line-height: 1.4; }
+        .card ul { list-style: none; margin-top: 10px; }
+        .card li::before { content: "» "; color: var(--accent-purple); }
+
+        .date-badge { color: var(--accent-purple); font-weight: 700; font-size: 0.7rem; margin-bottom: 5px; display: block; }
+
+        /* =========================================================
+           BOUTONS & UI
+        ========================================================= */
+        .btn {
+            background: transparent;
+            color: var(--accent-cyan); padding: 10px 20px; border: 1px solid var(--accent-cyan);
+            text-decoration: none; font-family: "Orbitron"; font-size: 0.8rem;
+            display: inline-block; transition: var(--transition); cursor: pointer;
+            margin-top: 15px;
+        }
+        .btn:hover { background: var(--accent-cyan); color: var(--bg-deep); box-shadow: 0 0 20px var(--accent-cyan); }
+
+        .project-tag {
+            border: 1px solid var(--accent-purple); color: var(--accent-purple);
+            padding: 2px 8px; font-size: 0.65rem; font-weight: 700; margin-bottom: 10px; display: inline-block;
+        }
+
+        form { max-width: 500px; display: flex; flex-direction: column; gap: 10px; }
+        input, textarea { 
+            padding: 12px; border-radius: 0; border: 1px solid var(--glass-border); 
+            background: var(--glass); color: white;
+        }
+        input:focus { outline: none; border-color: var(--accent-cyan); }
+
+        /* VAISSEAU DÉCO */
+        .spaceship {
+            position: absolute; width: 40px; height: 40px;
+            fill: var(--accent-cyan); opacity: 0.1;
+            pointer-events: none; z-index: -1;
+        }
+
+    </style>
+</head>
+<body>
+
+    <canvas id="particle-canvas"></canvas>
+
+    <nav>
+        <div class="logo">J.FORTES_SYSTEMS</div>
+        <div class="links">
+            <a href="#home">Terminal</a>
+            <a href="#skills">Data</a>
+            <a href="#projects">Missions</a>
+            <a href="#experience">Log</a>
+            <a href="#contact">Signal</a>
+        </div>
+    </nav>
+
+    <section id="home">
+        <div style="position: relative;">
+            <span style="color: var(--accent-purple); font-weight: bold;">[ STATUS: ONLINE ]</span>
+            <h1>Administrateur <span>Systèmes</span><br>& Concepteur Web</h1>
+            <p style="color: var(--text-muted); max-width: 500px; font-size: 1rem;">
+                Navigation à travers les infrastructures réseaux et déploiement d'interfaces futuristes.
+            </p>
+            <a href="#projects" class="btn">INITIALISER LA MISSION</a>
+        </div>
+    </section>
+
+    <section id="skills">
+      <h2>Compétences // Skills</h2>
+      <div class="card-grid">
+          <div class="card">
+              <h3>Core Systems</h3>
+              <p>Linux, SQL, GLPI.</p>
+              <p style="margin-top:10px"><strong>Virtu:</strong> VMware, Proxmox, Hyper-V.</p>
+          </div>
+          <div class="card">
+              <h3>Web Interface</h3>
+              <p>Laravel, PHP, Java.</p>
+              <p style="margin-top:10px"><strong>Front:</strong> HTML, CSS Moderne, Canva.</p>
+          </div>
+      </div>
+    </section>
+
+    <section id="projects">
+        <h2>Missions // Projects</h2>
+        <div class="card-grid">
+            <div class="card">
+                <span class="project-tag">SECTEUR DAWAN</span>
+                <h3>Infra & Réseaux</h3>
+                <p>Maintenance préventive et gestion des protocoles d'accès sécurisés.</p>
+            </div>
+            <div class="card">
+                <span class="project-tag">SECTEUR CITROËN</span>
+                <h3>Digital App</h3>
+                <p>Développement d'outils de bord web et gestion de la visibilité galactique.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="experience">
+        <h2>Logs de Parcours</h2>
+        <div class="card-grid">
+            <div class="card">
+                <span class="date-badge">2024 > 2025</span>
+                <h3>Admin Système @Dawan</h3>
+                <ul>
+                    <li>Maintien opérationnel des équipements.</li>
+                    <li>Architecture réseaux.</li>
+                </ul>
+            </div>
+            <div class="card">
+                <span class="date-badge">2022 > 2023</span>
+                <h3>Web Manager @Citroën</h3>
+                <ul>
+                    <li>Développement App Web.</li>
+                    <li>Social Media Strategy.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <h2>Envoyer un Signal</h2>
+        <form>
+            <input type="text" placeholder="Identifiant" required>
+            <input type="email" placeholder="Canal de retour (Email)" required>
+            <textarea rows="3" placeholder="Message crypté..." required></textarea>
+            <button type="submit" class="btn">TRANSMETTRE</button>
+        </form>
+    </section>
+
+    <footer style="padding: 20px; text-align: center; color: var(--text-muted); font-size: 0.7rem; letter-spacing: 2px;">
+        © JOCELYN FORTES // PROTOCOLE 2025 // <a href="#" style="color:var(--accent-cyan)">LINKEDIN</a>
+    </footer>
+
+    <script>
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Star {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2;
+                this.speed = Math.random() * 0.5 + 0.1;
+            }
+            draw() {
+                ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            update() {
+                this.y += this.speed;
+                if (this.y > canvas.height) this.y = 0;
+            }
+        }
+
+        for (let i = 0; i < 200; i++) particles.push(new Star());
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
+</body>
+</html>
