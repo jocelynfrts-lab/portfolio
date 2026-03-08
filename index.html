@@ -256,10 +256,11 @@ footer{
 
 <section id="contact">
   <h2>Contact</h2>
-  <form>
-    <input type="text" placeholder="Votre nom" required>
-    <input type="email" placeholder="Votre email" required>
-    <textarea rows="4" placeholder="Votre message..." required></textarea>
+
+  <form action="https://formspree.io/f/mgonvbrd" method="POST">
+    <input type="text" name="name" placeholder="Votre nom" required>
+    <input type="email" name="email" placeholder="Votre email" required>
+    <textarea name="message" rows="4" placeholder="Votre message..." required></textarea>
     <button class="btn" type="submit">Envoyer</button>
   </form>
 </section>
